@@ -40,6 +40,7 @@ async function createWikiItemTemplate() {
     // Create the text paragraph
     const wikiText = document.createElement('p');
     wikiText.classList.add('wiki-text');
+    // fetching summary from wikipedia
     const promise = await fetch(apiUrl);
     let text = ""
     if (promise.ok) {
@@ -80,10 +81,6 @@ document.addEventListener("DOMContentLoaded", async function() {
   
      // building five wiki items
     for (let i = 1; i <= 5; i++) {
-        const title = `Breed ${i}`;
-        const text = "Some text about this breed.";
-     
-    
         const wikiItem = await createWikiItemTemplate();
         container.appendChild(wikiItem);
     }
