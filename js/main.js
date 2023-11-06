@@ -1,4 +1,4 @@
-// Create the main container
+// Creating the main container
 const container = document.createElement('div');
 container.classList.add('container');
 
@@ -13,12 +13,16 @@ const fetchData = async () => {
 }
 
 // Function to generate a wiki item template
-async function createWikiItemTemplate(text) {
+async function createWikiItemTemplate() {
     const imageUrl = await fetchData()
     const paths = imageUrl.split('/');
 
-// The breed name is the second-to-last segment in the path (index -2)
-    const breedName = paths[paths.length - 2];
+// getting the breed name from the path and it is the second to last repository
+    const breed = paths[paths.length - 2].split('-');
+    const breedName = breed[1]+"_"+breed[0]
+    
+
+    const apiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${breedName}`;
 
     // Create the wiki item
     const wikiItem = document.createElement('div');
@@ -36,6 +40,16 @@ async function createWikiItemTemplate(text) {
     // Create the text paragraph
     const wikiText = document.createElement('p');
     wikiText.classList.add('wiki-text');
+    const promise = await fetch(apiUrl);
+    let text = ""
+    if (promise.ok) {
+        const data = await promise.json();
+        text = data.extract || "Summary not available";
+        
+      } else {
+        console.error("Failed to fetch Wikipedia summary:");
+        text = "not found"
+      }
     wikiText.textContent = text;
 
     // Create the image container
@@ -61,17 +75,16 @@ async function createWikiItemTemplate(text) {
     return wikiItem;
 }
 
-// Generate and append the wiki items to the container
+// esentilly the main porgram that runs once the document is loaded 
 document.addEventListener("DOMContentLoaded", async function() {
-  // Your code here
-  // This function will be executed as soon as the HTML document is fully parsed, even if external resources like images are still loading.
-
+  
+     // building five wiki items
     for (let i = 1; i <= 5; i++) {
         const title = `Breed ${i}`;
         const text = "Some text about this breed.";
      
     
-        const wikiItem = await createWikiItemTemplate(text);
+        const wikiItem = await createWikiItemTemplate();
         container.appendChild(wikiItem);
     }
 
