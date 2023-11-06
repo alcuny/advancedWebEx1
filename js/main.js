@@ -52,8 +52,9 @@ async function createWikiItemTemplate(text) {
 
     // Append elements to construct the template
     imgContainer.appendChild(wikiImg);
-    content.appendChild(wikiText);
+    
     content.appendChild(imgContainer);
+    content.appendChild(wikiText);
     wikiItem.appendChild(header);
     wikiItem.appendChild(content);
 
@@ -74,9 +75,11 @@ document.addEventListener("DOMContentLoaded", async function() {
         container.appendChild(wikiItem);
     }
 
-    fetchData()
+    //fetchData()
 });
 
 // Append the container to the document body
 document.body.appendChild(container);
+
+
 
